@@ -1,0 +1,1 @@
+export { default as Foto_Perfil } from './foto';
