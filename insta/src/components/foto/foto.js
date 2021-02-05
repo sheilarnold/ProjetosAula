@@ -2,10 +2,10 @@ import React from 'react';
 import {Image} from 'react-native';
 import styles from './styles';
 
-const Foto_Perfil = () => {
+const Foto_Perfil = ({foto}) => {
     return(
         <Image 
-            source={require("../../../res/img/capitu.jpg")}
+            source={{uri: foto}}
             style={styles.config_img}
         />
     );

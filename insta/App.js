@@ -1,52 +1,52 @@
-import React, { Component, Fragment } from 'react';
-import { Image, ScrollView, Dimensions, StyleSheet, FlatList} from 'react-native';
+import React, { Fragment, useState, useEffect } from 'react';
+import { Image, ScrollView, Dimensions, StyleSheet, FlatList, Text, TouchableOpacity} from 'react-native';
+import lerFotos from './src/api/feed';
 import {Cabecalho} from './src/components/cabecalho';
+import Post from './src/components/post/post';
 
-class App extends Component {
-
-static defaultProps = {
-  dados : [
-    {id: '1', usuario: "Sheila C S Arnold"},
-    {id: '2', usuario: "Mariana Nunes"},
-    {id: '3', usuario: "Pietro Santos"},
-    {id: '4', usuario: "Miguel Alcantra"},
-  ]
-}
-
+const App = () => {
+  
   addItem = ({item, index}) => {
     return(
-      <Fragment>
-        <Cabecalho username={item.usuario}/>   
-        <Image 
-          source={require("./res/img/pub.jpeg")}
-          style={styles.config_img}     
-        />
-      </Fragment>
+      <Post
+        userName={item.userName}
+        userUrl={item.userURL}
+        urlimgpost={item.url}
+        descricao={item.description}
+        likes={item.likes}
+      />
     )
   }
 
-  render(){
-    const {props} = this;
-    const keyExtractor = item => item.id;
+    const keyExtractor = item => item.id.toString();
+    
+    const [fotos, setFotos] = useState([]);
+    useEffect(()=>{
+      lerFotos(setFotos);
+    }, []);
+    
     return(
       <ScrollView>
         <FlatList
-          data={props.dados}
+          data={fotos}
           keyExtractor={keyExtractor}
           renderItem={this.addItem}
         />
       </ScrollView>
     );
-  }
-  
-}
 
+}
 const largura = Dimensions.get("screen").width;//largura da tela
 const styles = StyleSheet.create({
 
   config_img:{
     width: largura, 
     height: largura,
+  },
+
+  like: {
+    width: 30,
+    height: 30,
   }
 
 });
