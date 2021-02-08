@@ -1,13 +1,14 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { Image, ScrollView, Dimensions, StyleSheet, FlatList, Text, TouchableOpacity} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, Dimensions, StyleSheet, FlatList, Text, TouchableOpacity, View} from 'react-native';
 import lerFotos from './src/api/feed';
-import {Cabecalho} from './src/components/cabecalho';
+import { Comentarios } from './src/components/comentarios';
 import Post from './src/components/post/post';
 
 const App = () => {
   
   addItem = ({item, index}) => {
     return(
+      <View>
       <Post
         userName={item.userName}
         userUrl={item.userURL}
@@ -15,6 +16,8 @@ const App = () => {
         descricao={item.description}
         likes={item.likes}
       />
+      <Comentarios comentarios={item.comentarios}/>
+      </View>
     )
   }
 
