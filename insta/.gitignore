@@ -58,4 +58,4 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-/src/ip_server.js
+ip_server.js

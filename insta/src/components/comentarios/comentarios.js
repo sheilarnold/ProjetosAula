@@ -2,19 +2,16 @@ import React, { Fragment, useState } from 'react';
 import { Text, FlatList, View, TextInput, Image, Touchable, TouchableOpacity } from "react-native";
 import styles from './styles';
 
-const Comentarios = ({comentarios}) => {
+const Comentarios = ({comentarios, adicionar_comentario}) => {
     
     const [coments, setComents] = useState(comentarios);
     
-    const adicionar_comentario = () => {
+    const comentar = () => {
         //console.warn(comentario);
         campo_input.clear();
-        const novos_comentarios = {
-            date: Date.now(),
-            text: comentario,
-            userName: "Sheila"
-        }
-        setComents([...coments, novos_comentarios]);
+        const novo_comentario = adicionar_comentario({comentario: comentario, user: "Sheila"});
+        
+        setComents([...coments, novo_comentario]);
     }
     
     let comentario = "";
@@ -33,7 +30,7 @@ const Comentarios = ({comentarios}) => {
                     placeholder="Escreva um comentário!"
                     style={{flex:1}}
                 />
-                <TouchableOpacity onPress={adicionar_comentario}>
+                <TouchableOpacity onPress={comentar}>
                     <Image
                         source={require('../../../res/img/send.png')}
                         style={styles.img}
