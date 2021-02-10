@@ -8,7 +8,7 @@ import {Post} from '../../components/post';
 import { recalcula_likes, verifica_like } from '../../api/curtidas';
 import adicionar_comentario from '../../api/comentarios';
 
-const Feed = () => {
+const Feed = ({navigation}) => {
      
   addItem = ({item, index}) => {
     return(
@@ -34,12 +34,8 @@ const Feed = () => {
       lerFotos(setFotos);
     }, []);
     
-    let altura = 0;
-    if(Platform.OS == "ios")
-      altura=35;
-
     return(
-      <ScrollView style={{marginTop:altura}}>
+      <ScrollView style={{marginTop:0}}>
         <StatusBar
           backgroundColor="white"
           barStyle="light-content"
@@ -53,6 +49,16 @@ const Feed = () => {
     );
 
 }
+
+Feed.navigationOptions = () => {
+  
+  const opcoes = {
+    title: "Feed topper"
+  }
+
+  return opcoes;
+}
+
 const largura = Dimensions.get("screen").width;//largura da tela
 const styles = StyleSheet.create({
 

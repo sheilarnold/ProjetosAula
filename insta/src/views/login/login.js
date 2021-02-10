@@ -1,9 +1,10 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import React, { Fragment, useState } from 'react';
 import { Button, TextInput, View, Text } from "react-native";
 import efetuar_login from '../../api/login';
 import styles from './style';
 
-const Login = () => {
+const Login = ({navigation}) => {
 
     const [username, setUsername] = useState("");
     const [senha, setSenha] = useState("");
@@ -13,7 +14,9 @@ const Login = () => {
         //console.warn(username, senha);
         try{
             const token = await efetuar_login(username, senha);
-            console.warn(token);
+            const token_username = "token_" + username;
+            await AsyncStorage.setItem(token_username, token);
+            navigation.push("Feed");
         }catch(e){
             setErro(e.message);
         }
@@ -43,6 +46,15 @@ const Login = () => {
             </View>
         </Fragment>
     )
+}
+
+Login.navigationOptions = () => {
+  
+    const opcoes = {
+      header: null
+    }
+  
+    return opcoes;
 }
 
 export default Login;
