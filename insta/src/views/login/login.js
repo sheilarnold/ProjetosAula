@@ -16,7 +16,7 @@ const Login = ({navigation}) => {
             const token = await efetuar_login(username, senha);
             const token_username = "token_" + username;
             await AsyncStorage.setItem(token_username, token);
-            navigation.push("Feed");
+            navigation.replace("Feed", {username: username});
         }catch(e){
             setErro(e.message);
         }

@@ -50,10 +50,10 @@ const Feed = ({navigation}) => {
 
 }
 
-Feed.navigationOptions = () => {
+Feed.navigationOptions = ({navigation}) => {
   
   const opcoes = {
-    title: "Feed topper"
+    title: navigation.getParam("username")
   }
 
   return opcoes;
