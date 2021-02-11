@@ -15,7 +15,9 @@ import {
   Text,
   Button,
   StatusBar,
-  AppState
+  AppState,
+  Clipboard,
+  AsyncStorage
 } from 'react-native';
 
 import {
@@ -30,18 +32,24 @@ import Camera_Dialog from './app/components/CameraDialog';
 import PictureList from './app/components/PictureList';
 
 class App extends Component {
-/*
-  componentDidMount(){
-    AppState.addEventListener('change', (nextState) => {
+
+  async componentDidMount(){
+    /*AppState.addEventListener('change', (nextState) => {
       console.log(nextState);
     })
 
     NetInfo.addEventListener(state => {
       console.log("Connection type", state.type);
       console.log("Is connected?", state.isConnected);
-    });
+    });*/
+
+    //Clipboard.setString("Sheila");//Escreve string na área de transferencia
+    //console.log(await Clipboard.getString());
+    //await AsyncStorage.setItem('mytext', "Meu texto");
+    const value = await AsyncStorage.getItem('mytext');
+    console.log(value)
   }
-*/
+
   state ={
     pictureList: [
       {id: '1', url: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'},
