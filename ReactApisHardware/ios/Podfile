@@ -10,6 +10,8 @@ target 'ReactApisHardware' do
 
   pod 'RNShare', :path => '../node_modules/react-native-share'
 
+  pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
+
   target 'ReactApisHardwareTests' do
     inherit! :complete
     # Pods for testing

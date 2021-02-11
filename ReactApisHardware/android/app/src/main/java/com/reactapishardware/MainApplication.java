@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.netinfo.NetInfoPackage;
 import cl.json.RNSharePackage;
 import cl.json.ShareApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -28,7 +29,7 @@ public class MainApplication extends Application implements ShareApplication, Re
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          packages.add(new RNSharePackage());
+          //packages.add(new RNSharePackage());
           return packages;
         }
 

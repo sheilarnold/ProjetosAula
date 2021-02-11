@@ -6,14 +6,16 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
   Text,
+  Button,
   StatusBar,
+  AppState
 } from 'react-native';
 
 import {
@@ -23,93 +25,77 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import NetInfo from "@react-native-community/netinfo";
+import Camera_Dialog from './app/components/CameraDialog';
+import PictureList from './app/components/PictureList';
 
-const App: () => React$Node = () => {
-  console.log('teste');
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+class App extends Component {
+/*
+  componentDidMount(){
+    AppState.addEventListener('change', (nextState) => {
+      console.log(nextState);
+    })
+
+    NetInfo.addEventListener(state => {
+      console.log("Connection type", state.type);
+      console.log("Is connected?", state.isConnected);
+    });
+  }
+*/
+  state ={
+    pictureList: [
+      {id: '1', url: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'},
+      {id: '2', url: 'https://catracalivre.com.br/wp-content/thumbnails/hzEEdZI4Jr1BQm4LzxzoSKe8hfU=/wp-content/uploads/2021/02/sarah-450x299.png'},
+      {id: '3', url: 'https://static.vix.com/pt/sites/default/files/batom-vermelho-sarah-bbb_0221_1400x800_0.jpg'},
+      {id: '4', url: 'https://www.einerd.com.br/wp-content/uploads/2021/02/sarah-e-drax-bbb-21.jpg'},
+    ],
+    isModalOpen: false,
+  }
+
+  onPictureSelect = (item) => {
+
+  }
+
+  openModal = () => {
+    this.setState({isModalOpen: true})
+  }
+
+  closeModal = (response) => {
+    this.setState({isModalOpen: false})
+  }
+
+  render() {
+    const {state} = this;
+    //console.warn(state)
+    return (
+      <View style={styles.container}>
+        <PictureList onClick={this.onPictureSelect} list={state.pictureList}  />
+        <View style={styles.footer}>
+          <Button
+            onPress={this.openModal}
+            title="Nova Foto"
+            color="#0062AC"
+          />
+        </View>
+        <Camera_Dialog isOpen={state.isModalOpen} onClose={this.closeModal}/>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5fcff'
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  footer:{
+    padding: 15,
+    backgroundColor: '#999999',
+    width: "100%",
+    textAlign: "center",
+  }
 });
 
 export default App;
