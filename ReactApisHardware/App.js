@@ -17,7 +17,7 @@ import {
   StatusBar,
   AppState,
   Clipboard,
-  AsyncStorage
+  //AsyncStorage
 } from 'react-native';
 
 import {
@@ -30,6 +30,7 @@ import {
 import NetInfo from "@react-native-community/netinfo";
 import Camera_Dialog from './app/components/CameraDialog';
 import PictureList from './app/components/PictureList';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class App extends Component {
 
@@ -46,6 +47,9 @@ class App extends Component {
     //Clipboard.setString("Sheila");//Escreve string na área de transferencia
     //console.log(await Clipboard.getString());
     //await AsyncStorage.setItem('mytext', "Meu texto");
+    //const value = await AsyncStorage.getItem('mytext');
+    //console.log(value)
+    //await AsyncStorage.setItem("mytext", "Community");
     const value = await AsyncStorage.getItem('mytext');
     console.log(value)
   }
