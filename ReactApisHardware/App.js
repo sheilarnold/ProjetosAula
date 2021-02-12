@@ -32,6 +32,8 @@ import Camera_Dialog from './app/components/CameraDialog';
 import PictureList from './app/components/PictureList';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import fs from 'react-native-fs';
+
 class App extends Component {
 
   async componentDidMount(){
@@ -50,8 +52,13 @@ class App extends Component {
     //const value = await AsyncStorage.getItem('mytext');
     //console.log(value)
     //await AsyncStorage.setItem("mytext", "Community");
-    const value = await AsyncStorage.getItem('mytext');
-    console.log(value)
+    //const value = await AsyncStorage.getItem('mytext');
+    //console.log(value)
+    const path = fs.DocumentDirectoryPath + "/text.txt";
+    console.log(path);
+    //fs.writeFile(path, "Texto dentro do arquivo", "utf8");
+    const arq = await fs.readFile(path, 'utf8');
+    console.log(arq);
   }
 
   state ={
