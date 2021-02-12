@@ -33,6 +33,7 @@ import PictureList from './app/components/PictureList';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import fs from 'react-native-fs';
+import { StorageService } from './app/services/StorageService';
 
 class App extends Component {
 
@@ -54,19 +55,28 @@ class App extends Component {
     //await AsyncStorage.setItem("mytext", "Community");
     //const value = await AsyncStorage.getItem('mytext');
     //console.log(value)
-    const path = fs.DocumentDirectoryPath + "/text.txt";
-    console.log(path);
+    //const path = fs.DocumentDirectoryPath + "/text.txt";
+    //console.log(path);
     //fs.writeFile(path, "Texto dentro do arquivo", "utf8");
-    const arq = await fs.readFile(path, 'utf8');
-    console.log(arq);
-  }
-
-  state ={
-    pictureList: [
+    //const arq = await fs.readFile(path, 'utf8');
+    //console.log(arq);
+    /*StorageService.set('pictureList', [
       {id: '1', url: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'},
       {id: '2', url: 'https://catracalivre.com.br/wp-content/thumbnails/hzEEdZI4Jr1BQm4LzxzoSKe8hfU=/wp-content/uploads/2021/02/sarah-450x299.png'},
       {id: '3', url: 'https://static.vix.com/pt/sites/default/files/batom-vermelho-sarah-bbb_0221_1400x800_0.jpg'},
       {id: '4', url: 'https://www.einerd.com.br/wp-content/uploads/2021/02/sarah-e-drax-bbb-21.jpg'},
+    ])*/
+    const pictureList = await StorageService.get('pictureList') || [];
+    console.log(pictureList);
+    this.setState({pictureList});
+  }
+
+  state ={
+    pictureList: [
+      /*{id: '1', url: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'},
+      {id: '2', url: 'https://catracalivre.com.br/wp-content/thumbnails/hzEEdZI4Jr1BQm4LzxzoSKe8hfU=/wp-content/uploads/2021/02/sarah-450x299.png'},
+      {id: '3', url: 'https://static.vix.com/pt/sites/default/files/batom-vermelho-sarah-bbb_0221_1400x800_0.jpg'},
+      {id: '4', url: 'https://www.einerd.com.br/wp-content/uploads/2021/02/sarah-e-drax-bbb-21.jpg'},*/
     ],
     isModalOpen: false,
   }
@@ -80,7 +90,20 @@ class App extends Component {
   }
 
   closeModal = (response) => {
-    this.setState({isModalOpen: false})
+    const toUpdate = {
+      isModalOpen: false
+    }
+    //this.setState({isModalOpen: false});
+    if(typeof response == 'string'){
+      const newItem = { id: (Date.now()).toString(), url: response },
+      pictureList = [...this.state.pictureList, newItem];
+      console.log('p: ', pictureList);
+      toUpdate.pictureList = pictureList;
+      console.log('tp: ', toUpdate.pictureList);
+      StorageService.set('pictureList', pictureList);
+    }
+
+    this.setState(toUpdate);
   }
 
   render() {

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { View, Image, Text, Button, Modal, TouchableOpacity, StyleSheet } from "react-native";
+import Clipboard from '@react-native-community/clipboard';
+import { PictureService } from "../services/PictureService";
 
 class Camera_Dialog extends Component{
     static defaultProps = {
@@ -11,12 +13,23 @@ class Camera_Dialog extends Component{
         currentImage: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'
     }
 
-    getImageFormClipboard = () => {
+    getImageFromClipboard = async() => {
+        const imageUrl = await Clipboard.getString();
+        const extensions = ['.png', '.jpg', '.jpeg'];
+        const isImage = extensions.some(extension => imageUrl.toLowerCase().includes(extension));
+        console.log(imageUrl);
+        console.log(isImage);
+        if(isImage){
+            this.setState({
+                currentImage: imageUrl
+            })
+        }            
 
     }
 
-    save = () => {
-        this.props.onClose();
+    save = async() => {
+        const result = await PictureService.save(this.state.currentImage);
+        this.props.onClose(result);
     }
 
     capture = () => {
@@ -54,7 +67,7 @@ class Camera_Dialog extends Component{
                         />
                         <Button
                             title="Colar"
-                            onPress={this.getImageFormClipboard}
+                            onPress={this.getImageFromClipboard}
                             color="blue"
                         />
                     </View>
@@ -75,7 +88,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     preview: {
-        width: "100%",
+        width: "25%",
         height: 75,
         borderWidth: 2,
         borderColor: "black"
