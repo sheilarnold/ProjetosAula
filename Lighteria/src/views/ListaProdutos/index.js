@@ -14,7 +14,11 @@ const ListaProdutos = ({}) => {
 
     const keyExtractor = item => item.id;
     return(
-        <View>
+        <View
+            style={{
+                marginHorizontal: 24
+            }}
+        >
             <FlatList
                 numColumns={2}
                 data={DATA}

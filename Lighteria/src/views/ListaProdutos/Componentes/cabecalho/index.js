@@ -14,7 +14,7 @@ const Cabecalho = ({}) => {
             flexDirection: "row",
             justifyContent: "space-between",//alinhamento pelo eixo X
             alignItems: 'center',//alinhamento pelo eixo Y
-            paddingHorizontal: 24,
+            paddingHorizontal: 6,
             paddingTop: 30,
             paddingBottom: 40,
             }}
@@ -48,9 +48,9 @@ const Cabecalho = ({}) => {
             </View>
         </View>
         <View
-            style={{
+            /*style={{
             paddingHorizontal: 24,
-            }}
+            }}*/
         >
             <View
             style={{
@@ -58,25 +58,25 @@ const Cabecalho = ({}) => {
                 borderColor: "#A1A5AA"
             }}
             />
-            <View
-            style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginTop: -46,
-            }}
-            >
-            <Text
+                <View
                 style={{
-                padding: 34,
-                backgroundColor: "#F4F0F4",
-                fontSize: 16,
-                fontFamily: "OpenSans-Regular",
-                color: "#A1A5AA",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    marginTop: -46,
                 }}
-            >
-                Categorias
-            </Text>
-            </View>
+                >
+                    <Text
+                        style={{
+                        padding: 34,
+                        backgroundColor: "#F4F0F4",
+                        fontSize: 16,
+                        fontFamily: "OpenSans-Regular",
+                        color: "#A1A5AA",
+                        }}
+                    >
+                        Categorias
+                    </Text>
+                </View>
         </View>
         </SafeAreaView>
     )
