@@ -71,6 +71,16 @@ class App extends Component {
     this.setState({pictureList});
   }
 
+  carregar_fotos = () => {
+    StorageService.set('pictureList', [
+      {id: '1', url: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'},
+      {id: '2', url: 'https://catracalivre.com.br/wp-content/thumbnails/hzEEdZI4Jr1BQm4LzxzoSKe8hfU=/wp-content/uploads/2021/02/sarah-450x299.png'},
+      {id: '3', url: 'https://static.vix.com/pt/sites/default/files/batom-vermelho-sarah-bbb_0221_1400x800_0.jpg'},
+      {id: '4', url: 'https://www.einerd.com.br/wp-content/uploads/2021/02/sarah-e-drax-bbb-21.jpg'},
+    ]);
+    this.setState({isModalOpen: false})
+  }
+
   state ={
     pictureList: [
       /*{id: '1', url: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'},
@@ -117,6 +127,11 @@ class App extends Component {
             onPress={this.openModal}
             title="Nova Foto"
             color="#0062AC"
+          />
+          <Button
+            onPress={this.carregar_fotos}
+            title="Carregar Fotos"
+            color="red"
           />
         </View>
         <Camera_Dialog isOpen={state.isModalOpen} onClose={this.closeModal}/>
