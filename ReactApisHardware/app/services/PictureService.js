@@ -1,13 +1,15 @@
 import {Alert} from 'react-native';
 import fs from 'react-native-fs';
+import NetworkService from './NertworkService';
 
 export const PictureService ={
     async save(filePath){
         console.log(filePath);
         if(filePath.startsWith('http')){
             filepath = PictureService.saveRemote(filePath);
+            console.log('+', filePath)
         }
-        console.log(filePath);
+        console.log('-', filePath);
         return filePath;
     },
     async saveRemote(fromUrl){
@@ -24,6 +26,10 @@ export const PictureService ={
     selectPicture(item, onRemoveCallback){
         Alert.alert('Minha imagem', item.id, [
             {
+                text: "Compartilhar",
+                onPress: () => PictureService.onShare(item),
+            },
+            {
                 text: 'Apagar',
                 onPress: () => onRemoveCallback(item)
             },
@@ -34,5 +40,8 @@ export const PictureService ={
         ],{
             cancelable: false,
         })
+    },
+    async onShare(item){
+        const response = await NetworkService.share(item.url);
     }
 }

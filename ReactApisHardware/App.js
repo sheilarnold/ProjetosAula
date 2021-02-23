@@ -28,6 +28,7 @@ class App extends Component {
       {id: '2', url: 'https://catracalivre.com.br/wp-content/thumbnails/hzEEdZI4Jr1BQm4LzxzoSKe8hfU=/wp-content/uploads/2021/02/sarah-450x299.png'},
       {id: '3', url: 'https://static.vix.com/pt/sites/default/files/batom-vermelho-sarah-bbb_0221_1400x800_0.jpg'},
       {id: '4', url: 'https://www.einerd.com.br/wp-content/uploads/2021/02/sarah-e-drax-bbb-21.jpg'},
+      {id: '5', url: 'https://www.educolorir.com/imagem-mona-lisa-dm17052.jpg'},
     ]);
     this.componentDidMount();
   }
@@ -62,6 +63,7 @@ class App extends Component {
     if(typeof response == 'string'){
       const newItem = { id: (Date.now()).toString(), url: response },
       pictureList = [...this.state.pictureList, newItem];
+      console.log(newItem);
       //console.log('p: ', pictureList);
       toUpdate.pictureList = pictureList;
       //console.log('tp: ', toUpdate.pictureList);
