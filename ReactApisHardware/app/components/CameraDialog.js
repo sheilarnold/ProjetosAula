@@ -17,8 +17,8 @@ class Camera_Dialog extends Component{
         const imageUrl = await Clipboard.getString();
         const extensions = ['.png', '.jpg', '.jpeg'];
         const isImage = extensions.some(extension => imageUrl.toLowerCase().includes(extension));
-        console.log(imageUrl);
-        console.log(isImage);
+        //console.log(imageUrl);
+        //console.log(isImage);
         if(isImage){
             this.setState({
                 currentImage: imageUrl

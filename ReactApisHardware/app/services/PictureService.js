@@ -1,3 +1,4 @@
+import {Alert} from 'react-native';
 import fs from 'react-native-fs';
 
 export const PictureService ={
@@ -19,5 +20,19 @@ export const PictureService ={
         });
         console.log(result);
         return 'file://' + toFile;
+    },
+    selectPicture(item, onRemoveCallback){
+        Alert.alert('Minha imagem', item.id, [
+            {
+                text: 'Apagar',
+                onPress: () => onRemoveCallback(item)
+            },
+            {
+                text: "Cancelar",
+                style: 'cancel',
+            },
+        ],{
+            cancelable: false,
+        })
     }
 }

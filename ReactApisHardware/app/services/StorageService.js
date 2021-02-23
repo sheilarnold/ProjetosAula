@@ -3,11 +3,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export const StorageService ={
     async get(key){
-        console.log("get")
+        console.log("StorageService get")
         return JSON.parse(await AsyncStorage.getItem(key));
     },
     async set(key, value){
-        console.log("set")
+        console.log("StorageService set")
         return await AsyncStorage.setItem(key, JSON.stringify(value));
     }
 }

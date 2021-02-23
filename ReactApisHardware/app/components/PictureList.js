@@ -35,7 +35,7 @@ function PictureListItem(props){
     const l_janela = Dimensions.get("window").width;
     return(
             //style={{width:"32%", height: 40,}}
-        <TouchableHighlight onPress={() => {props.OnClick(item)}}>
+        <TouchableHighlight onPress={() => {props.onClick(item)}}>
             <Image source={{uri: item.url}}
             style={{width: l_janela/3 - 8, height: l_janela/3 - 8, margin: 2}}
             />

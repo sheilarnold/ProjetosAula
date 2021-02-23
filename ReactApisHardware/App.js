@@ -1,98 +1,53 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React, { Component } from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  Button,
-  StatusBar,
-  AppState,
-  Clipboard,
-  //AsyncStorage
-} from 'react-native';
+import { StyleSheet, View, Button, } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import NetInfo from "@react-native-community/netinfo";
 import Camera_Dialog from './app/components/CameraDialog';
 import PictureList from './app/components/PictureList';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import fs from 'react-native-fs';
 import { StorageService } from './app/services/StorageService';
+import { PictureService } from './app/services/PictureService';
 
 class App extends Component {
 
-  async componentDidMount(){
-    /*AppState.addEventListener('change', (nextState) => {
-      console.log(nextState);
-    })
-
-    NetInfo.addEventListener(state => {
-      console.log("Connection type", state.type);
-      console.log("Is connected?", state.isConnected);
-    });*/
-
-    //Clipboard.setString("Sheila");//Escreve string na área de transferencia
-    //console.log(await Clipboard.getString());
-    //await AsyncStorage.setItem('mytext', "Meu texto");
-    //const value = await AsyncStorage.getItem('mytext');
-    //console.log(value)
-    //await AsyncStorage.setItem("mytext", "Community");
-    //const value = await AsyncStorage.getItem('mytext');
-    //console.log(value)
-    //const path = fs.DocumentDirectoryPath + "/text.txt";
-    //console.log(path);
-    //fs.writeFile(path, "Texto dentro do arquivo", "utf8");
-    //const arq = await fs.readFile(path, 'utf8');
-    //console.log(arq);
-    /*StorageService.set('pictureList', [
-      {id: '1', url: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'},
-      {id: '2', url: 'https://catracalivre.com.br/wp-content/thumbnails/hzEEdZI4Jr1BQm4LzxzoSKe8hfU=/wp-content/uploads/2021/02/sarah-450x299.png'},
-      {id: '3', url: 'https://static.vix.com/pt/sites/default/files/batom-vermelho-sarah-bbb_0221_1400x800_0.jpg'},
-      {id: '4', url: 'https://www.einerd.com.br/wp-content/uploads/2021/02/sarah-e-drax-bbb-21.jpg'},
-    ])*/
+  async componentDidMount(){    
     const pictureList = await StorageService.get('pictureList') || [];
-    console.log(pictureList);
+    //console.log(pictureList);
     this.setState({pictureList});
   }
 
-  carregar_fotos = () => {
-    StorageService.set('pictureList', [
+  limpar_fotos = async() => {
+    //console.log('remove')
+    await AsyncStorage.removeItem('pictureList');
+    this.componentDidMount();
+  }
+
+  carregar_fotos = async() => {
+    await StorageService.set('pictureList', [
       {id: '1', url: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'},
       {id: '2', url: 'https://catracalivre.com.br/wp-content/thumbnails/hzEEdZI4Jr1BQm4LzxzoSKe8hfU=/wp-content/uploads/2021/02/sarah-450x299.png'},
       {id: '3', url: 'https://static.vix.com/pt/sites/default/files/batom-vermelho-sarah-bbb_0221_1400x800_0.jpg'},
       {id: '4', url: 'https://www.einerd.com.br/wp-content/uploads/2021/02/sarah-e-drax-bbb-21.jpg'},
     ]);
-    this.setState({isModalOpen: false})
+    this.componentDidMount();
   }
 
   state ={
-    pictureList: [
-      /*{id: '1', url: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'},
-      {id: '2', url: 'https://catracalivre.com.br/wp-content/thumbnails/hzEEdZI4Jr1BQm4LzxzoSKe8hfU=/wp-content/uploads/2021/02/sarah-450x299.png'},
-      {id: '3', url: 'https://static.vix.com/pt/sites/default/files/batom-vermelho-sarah-bbb_0221_1400x800_0.jpg'},
-      {id: '4', url: 'https://www.einerd.com.br/wp-content/uploads/2021/02/sarah-e-drax-bbb-21.jpg'},*/
-    ],
+    pictureList: [],
     isModalOpen: false,
   }
 
   onPictureSelect = (item) => {
+    PictureService.selectPicture(item, this.onRemove);
+  }
 
+  onRemove = async(item) => {
+    console.log(item.id)
+    const novaLista = this.state.pictureList.filter(item_lista => item_lista.id !== item.id);
+    console.log(novaLista)
+    await StorageService.set('pictureList', novaLista);
+    this.setState({novaLista});
+    this.componentDidMount();
   }
 
   openModal = () => {
@@ -107,9 +62,9 @@ class App extends Component {
     if(typeof response == 'string'){
       const newItem = { id: (Date.now()).toString(), url: response },
       pictureList = [...this.state.pictureList, newItem];
-      console.log('p: ', pictureList);
+      //console.log('p: ', pictureList);
       toUpdate.pictureList = pictureList;
-      console.log('tp: ', toUpdate.pictureList);
+      //console.log('tp: ', toUpdate.pictureList);
       StorageService.set('pictureList', pictureList);
     }
 
@@ -132,6 +87,11 @@ class App extends Component {
             onPress={this.carregar_fotos}
             title="Carregar Fotos"
             color="red"
+          />
+          <Button
+            onPress={this.limpar_fotos}
+            title="Limpar Fotos"
+            color="gray"
           />
         </View>
         <Camera_Dialog isOpen={state.isModalOpen} onClose={this.closeModal}/>
