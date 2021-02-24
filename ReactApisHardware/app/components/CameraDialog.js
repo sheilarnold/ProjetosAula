@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Image, Text, Button, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import Clipboard from '@react-native-community/clipboard';
 import { PictureService } from "../services/PictureService";
+import { RNCamera } from "react-native-camera";
 
 class Camera_Dialog extends Component{
     static defaultProps = {
@@ -10,7 +11,8 @@ class Camera_Dialog extends Component{
     }
 
     state ={
-        currentImage: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'
+        currentImage: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg',
+        img: "",
     }
 
     getImageFromClipboard = async() => {
@@ -25,6 +27,16 @@ class Camera_Dialog extends Component{
             })
         }            
 
+    }
+
+    async shot(){
+        if(this.camera){
+            const options = {quality: 0.5, base64: true};
+            const data = await this.camera.takePictureAsync(options);
+            console.log(data.uri)
+            this.setState({img: data.uri})
+            console.log(this.state.img)
+        }
     }
 
     save = async() => {
@@ -46,13 +58,25 @@ class Camera_Dialog extends Component{
             >
                 <View style={styles.modalView}>
                     <View style={styles.previewContainer}>
-                        <Image source={{uri: state.currentImage}} style={styles.preview}/>
+                        <Image source={{uri: state.img}} style={styles.preview}/>
                         <TouchableOpacity onPress={props.onClose}>
                             <Text style={styles.closeButton}>X</Text>
                         </TouchableOpacity>
                     </View>
                     <View>
-
+                        <Image
+                            source={{uri: this.state.img}}
+                            style={{width: 100, height: 100}}
+                        />
+                        <RNCamera
+                            ref={ref=>{this.camera = ref;}}
+                            style={{height: 200, width: "100%"}}
+                            type={RNCamera.Constants.Type.back}
+                            flashMode={RNCamera.Constants.FlashMode.off}
+                        />
+                        <Button
+                        title="Capturar foto"
+                        onPress={this.shot.bind(this)}/>
                     </View>
                     <View style={styles.btnContainer}>
                         <Button

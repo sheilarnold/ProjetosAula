@@ -16,6 +16,8 @@ target 'ReactApisHardware' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
   target 'ReactApisHardwareTests' do
     inherit! :complete
     # Pods for testing
