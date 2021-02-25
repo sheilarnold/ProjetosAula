@@ -3,8 +3,19 @@ import { View, Image, Text, Button, Modal, TouchableOpacity, StyleSheet } from "
 import Clipboard from '@react-native-community/clipboard';
 import { PictureService } from "../services/PictureService";
 import { RNCamera } from "react-native-camera";
+import CameraRoll from "@react-native-community/cameraroll";
 
 class Camera_Dialog extends Component{
+
+
+    async componentDidMount(){
+        const response = await CameraRoll.getPhotos({
+            first: 3,
+            assetType: "Photos",
+        })
+        console.log(response)
+    }
+
     static defaultProps = {
         isOpen: false,
         onClose: () => {},
@@ -33,9 +44,10 @@ class Camera_Dialog extends Component{
         if(this.camera){
             const options = {quality: 0.5, base64: true};
             const data = await this.camera.takePictureAsync(options);
-            console.log(data.uri)
+            //console.log(data.uri)
             this.setState({img: data.uri})
-            console.log(this.state.img)
+            CameraRoll.save(data.uri);
+            //console.log(this.state.img)
         }
     }
 
@@ -63,14 +75,21 @@ class Camera_Dialog extends Component{
                             <Text style={styles.closeButton}>X</Text>
                         </TouchableOpacity>
                     </View>
-                    <View>
+                    <View
+                        style={{
+                            flexDirection: "column",
+                            alignItems: "center",
+                            alignContent: "center",
+                            paddingTop: 100,
+                        }}
+                    >
                         <Image
                             source={{uri: this.state.img}}
-                            style={{width: 100, height: 100}}
+                            style={{width: 50, height: 50}}
                         />
                         <RNCamera
                             ref={ref=>{this.camera = ref;}}
-                            style={{height: 200, width: "100%"}}
+                            style={{height: 50, width: "50%",}}
                             type={RNCamera.Constants.Type.back}
                             flashMode={RNCamera.Constants.FlashMode.off}
                         />
@@ -104,6 +123,7 @@ class Camera_Dialog extends Component{
 const styles = StyleSheet.create({
     modalView: {
         flex: 1,
+        flexDirection: "column",
     },
     previewContainer: {
         backgroundColor: "gray",
@@ -124,6 +144,11 @@ const styles = StyleSheet.create({
         color: "white",
     },
     btnContainer: {
+        position: 'absolute', 
+        left: 0, 
+        right: 0, 
+        bottom: 25,
+
         flexDirection: "row",
         justifyContent: "space-around",
         height: 40,

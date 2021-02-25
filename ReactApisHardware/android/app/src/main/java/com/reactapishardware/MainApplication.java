@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.imagepicker.ImagePickerPackage;
+import com.reactnativecommunity.cameraroll.CameraRollPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.rnfs.RNFSPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
@@ -33,6 +35,7 @@ public class MainApplication extends Application implements ShareApplication, Re
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           //packages.add(new RNSharePackage());
+          //packages.add(new CameraRollPackage());
           return packages;
         }
 
