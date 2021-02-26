@@ -2,18 +2,53 @@ import React, { Component } from "react";
 import { View, Image, Text, Button, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import Clipboard from '@react-native-community/clipboard';
 import { PictureService } from "../services/PictureService";
+import ImagePicker from 'react-native-image-picker';
 import { RNCamera } from "react-native-camera";
 import CameraRoll from "@react-native-community/cameraroll";
+import { check, PERMISSIONS, request, RESULTS } from "react-native-permissions";
 
 class Camera_Dialog extends Component{
+/*
+    const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+    if(granted){
+        console.log('access granted')
+        let data = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes:ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect:[1,1],
+        quality:0.5,
+        })
+        console.log(data)
 
-
+        if (!data.cancelled){
+        setImage(data.uri);
+    }
+    
+    }else{
+        Alert.alert('Permissions required to access camera roll.')
+    }
+*/
     async componentDidMount(){
-        const response = await CameraRoll.getPhotos({
+        /*ImagePicker.showImagePicker({}, (response) => {
+            console.log(response)
+        })*/
+        console.log('obtendo permissões')
+        const permissao = request(PERMISSIONS.ANDROID.CAMERA).then((response) => {
+            console.log(response);
+            return response;
+        })
+        console.log(permissao)
+        const granted  = await check(PERMISSIONS.ANDROID.CAMERA).then((response) => {
+            console.log('response', response);
+            return response == RESULTS.GRANTED
+        })
+        console.log(granted)
+        ImagePicker.launchCamera({}, () => {alert('aqui')})
+        /*const response = await CameraRoll.getPhotos({
             first: 3,
             assetType: "Photos",
         })
-        console.log(response)
+        console.log(response)*/
     }
 
     static defaultProps = {
@@ -23,7 +58,7 @@ class Camera_Dialog extends Component{
 
     state ={
         currentImage: 'https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg',
-        img: "",
+        img: "https://www.dci.com.br/wp-content/uploads/2021/02/capacapa-1.jpg'",
     }
 
     getImageFromClipboard = async() => {
@@ -87,12 +122,7 @@ class Camera_Dialog extends Component{
                             source={{uri: this.state.img}}
                             style={{width: 50, height: 50}}
                         />
-                        <RNCamera
-                            ref={ref=>{this.camera = ref;}}
-                            style={{height: 50, width: "50%",}}
-                            type={RNCamera.Constants.Type.back}
-                            flashMode={RNCamera.Constants.FlashMode.off}
-                        />
+                        
                         <Button
                         title="Capturar foto"
                         onPress={this.shot.bind(this)}/>

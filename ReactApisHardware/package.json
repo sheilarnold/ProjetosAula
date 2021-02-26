@@ -19,6 +19,7 @@
     "react-native-camera": "^3.42.3",
     "react-native-fs": "^2.16.6",
     "react-native-image-picker": "^3.2.1",
+    "react-native-permissions": "^3.0.1",
     "react-native-share": "^5.1.0",
     "rn-fetch-blob": "^0.12.0"
   },
