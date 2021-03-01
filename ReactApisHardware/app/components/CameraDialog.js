@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { View, Image, Text, Button, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import Clipboard from '@react-native-community/clipboard';
 import { PictureService } from "../services/PictureService";
-import ImagePicker from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import { RNCamera } from "react-native-camera";
 import CameraRoll from "@react-native-community/cameraroll";
-import { check, PERMISSIONS, request, RESULTS } from "react-native-permissions";
+import { check, PERMISSIONS, request, requestMultiple, RESULTS } from "react-native-permissions";
 
 class Camera_Dialog extends Component{
 /*
@@ -33,17 +33,25 @@ class Camera_Dialog extends Component{
             console.log(response)
         })*/
         console.log('obtendo permissões')
-        const permissao = request(PERMISSIONS.ANDROID.CAMERA).then((response) => {
-            console.log(response);
+        const permissoes = requestMultiple([
+            PERMISSIONS.ANDROID.CAMERA,
+            PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+            PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        ]).then((response) => {
+            console.log(response)
             return response;
         })
-        console.log(permissao)
-        const granted  = await check(PERMISSIONS.ANDROID.CAMERA).then((response) => {
-            console.log('response', response);
-            return response == RESULTS.GRANTED
+
+        const fotos_galeria = await CameraRoll.getPhotos({            
+            first: 10,
+            assetType: "Photos",
+            after: "10",
         })
-        console.log(granted)
-        ImagePicker.launchCamera({}, () => {alert('aqui')})
+
+        console.log(fotos_galeria);
+        /*launchImageLibrary({}, () => async (response) => {
+            console.log(response)
+        })*/
         /*const response = await CameraRoll.getPhotos({
             first: 3,
             assetType: "Photos",
