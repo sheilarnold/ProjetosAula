@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Image, Text, Button, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import Clipboard from '@react-native-community/clipboard';
 import { PictureService } from "../services/PictureService";
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { RNCamera } from "react-native-camera";
 import CameraRoll from "@react-native-community/cameraroll";
 import { check, PERMISSIONS, request, requestMultiple, RESULTS } from "react-native-permissions";
@@ -42,13 +42,13 @@ class Camera_Dialog extends Component{
             return response;
         })
 
-        const fotos_galeria = await CameraRoll.getPhotos({            
+        /*const fotos_galeria = await CameraRoll.getPhotos({            
             first: 10,
             assetType: "Photos",
             after: "10",
         })
 
-        console.log(fotos_galeria);
+        console.log(fotos_galeria);*/
         /*launchImageLibrary({}, () => async (response) => {
             console.log(response)
         })*/
@@ -62,6 +62,7 @@ class Camera_Dialog extends Component{
     static defaultProps = {
         isOpen: false,
         onClose: () => {},
+        camera: null,
     }
 
     state ={
@@ -84,6 +85,7 @@ class Camera_Dialog extends Component{
     }
 
     async shot(){
+        console.log(this.camera)
         if(this.camera){
             const options = {quality: 0.5, base64: true};
             const data = await this.camera.takePictureAsync(options);
@@ -92,6 +94,7 @@ class Camera_Dialog extends Component{
             CameraRoll.save(data.uri);
             //console.log(this.state.img)
         }
+        
     }
 
     save = async() => {
@@ -100,7 +103,13 @@ class Camera_Dialog extends Component{
     }
 
     capture = () => {
-
+        launchCamera({
+            mediaType: "photo",
+            saveToPhotos: true,
+            includeBase64: false,
+        }, (response) => {
+            console.log(response)
+        })
     }
 
     render(){
@@ -120,20 +129,22 @@ class Camera_Dialog extends Component{
                     </View>
                     <View
                         style={{
-                            flexDirection: "column",
-                            alignItems: "center",
-                            alignContent: "center",
-                            paddingTop: 100,
+                            flex: 1,
+                            flexDirection: "column", 
                         }}
                     >
-                        <Image
-                            source={{uri: this.state.img}}
-                            style={{width: 50, height: 50}}
+                       <RNCamera
+                            ref={(ref) => {
+                                this.camera = ref;
+                            }}
+                            style={{
+                                flex: 1,
+                                height: 250,
+                                justifyContent: "flex-end",
+                                alignItems: "center"
+                            }}
+                            type={RNCamera.Constants.Type.back}
                         />
-                        
-                        <Button
-                        title="Capturar foto"
-                        onPress={this.shot.bind(this)}/>
                     </View>
                     <View style={styles.btnContainer}>
                         <Button
@@ -143,7 +154,8 @@ class Camera_Dialog extends Component{
                         />
                         <Button
                             title="Capturar"
-                            onPress={this.capture}
+                            //onPress={this.capture}
+                            onPress={this.shot}
                             color="blue"
                         />
                         <Button
