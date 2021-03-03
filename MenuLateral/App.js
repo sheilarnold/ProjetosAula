@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
 import {
   SafeAreaView,
@@ -24,53 +16,61 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import Principal from './src/Principal';
+import Sobre from './src/Sobre';
+import Configuracoes from './src/Configuracoes';
+import User from './src/User';
+
+
+  const App = () => {
+    return (
+      <>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            style={styles.scrollView}>
+            <Header />
+            {global.HermesInternal == null ? null : (
+              <View style={styles.engine}>
+                <Text style={styles.footer}>Engine: Hermes</Text>
+              </View>
+            )}
+            <View style={styles.body}>
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>Step One</Text>
+                <Text style={styles.sectionDescription}>
+                  Edit <Text style={styles.highlight}>App.js</Text> to change this
+                  screen and then come back to see your edits.
+                </Text>
+              </View>
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>See Your Changes</Text>
+                <Text style={styles.sectionDescription}>
+                  <ReloadInstructions />
+                </Text>
+              </View>
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>Debug</Text>
+                <Text style={styles.sectionDescription}>
+                  <DebugInstructions />
+                </Text>
+              </View>
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>Learn More</Text>
+                <Text style={styles.sectionDescription}>
+                  Read the docs to discover what to do next:
+                </Text>
+              </View>
+              <LearnMoreLinks />
             </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+          </ScrollView>
+        </SafeAreaView>
+      </>
+    );
+  };
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -111,4 +111,26 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+//export default App;
+
+const Drawer = createDrawerNavigator();
+
+export default function Menu(){
+  return(
+      <NavigationContainer>
+          <Drawer.Navigator 
+              initialRouteName="App"
+              drawerStyle={{
+                  backgroundColor: "#313131",
+                  paddingVertical: 20,
+              }}
+          >
+              <Drawer.Screen name="App" component={App}/>
+              <Drawer.Screen name="Principal" component={Principal}/>
+              <Drawer.Screen name="User" component={User}/>
+              <Drawer.Screen name="Sobre" component={Sobre}/>
+              <Drawer.Screen name="Configuracoes" component={Configuracoes}/>
+          </Drawer.Navigator>
+      </NavigationContainer>
+  )
+}
