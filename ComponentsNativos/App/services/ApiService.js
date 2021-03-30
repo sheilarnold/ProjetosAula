@@ -1,7 +1,10 @@
-const url = "http://192.168.56.1:3002/api/react-native/";
+import axios from "axios";
+
+const url = "http://192.168.0.103:3002/api/react-native/";
 
 const ApiService = {
-    get(endpoint){
+    
+    async get(endpoint){
         return fetch(`${url}${endpoint}`).then(response => response.json());
     },
 

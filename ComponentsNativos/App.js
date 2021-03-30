@@ -1,75 +1,46 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
+import React, { Component } from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
+  RefreshControl,
   ScrollView,
+  StyleSheet,
   View,
-  Text,
-  StatusBar,
 } from 'react-native';
 
 import {
-  Header,
-  LearnMoreLinks,
   Colors,
-  DebugInstructions,
-  ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import ListsService from './App/services/ListsService';
+import ListsView from './App/views/listsView';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
+class App extends Component{
+  state = {
+    lists: [],
+    isLoading: false
+  }
+  async componentDidMount(){
+    await this.getlists();
+  }
+  getlists = async() => {
+    this.setState({isLoading: true})
+    const lists = await ListsService.list();
+    console.log('****', lists)
+    this.setState({lists, isLoading: false})
+    return lists;
+  }
+  render(){
+    const {state} = this;
+    return (
+      <View style={{borderColor: "red", borderWidth: 1, height: "100%"}}>
         <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
+          refreshControl={
+            <RefreshControl refreshing={state.isLoading} onRefresh={this.getlists}/>
+          }
+        >
+          <ListsView lists={this.state.lists}/>
         </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
