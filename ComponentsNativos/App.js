@@ -20,6 +20,12 @@ class App extends Component{
   async componentDidMount(){
     await this.getlists();
   }
+  removeList = (listToRemove) => {
+    const lists = this.state.lists.filter(list => list.id !== listToRemove.item.id);
+    this.setState({lists});
+    console.log(listToRemove.item.id)
+    ListsService.remove(listToRemove.item.id);
+  }
   getlists = async() => {
     this.setState({isLoading: true})
     const lists = await ListsService.list();
@@ -36,7 +42,7 @@ class App extends Component{
             <RefreshControl refreshing={state.isLoading} onRefresh={this.getlists}/>
           }
         >
-          <ListsView lists={this.state.lists}/>
+          <ListsView lists={this.state.lists} onRemove={this.removeList}/>
         </ScrollView>
       </View>
     );

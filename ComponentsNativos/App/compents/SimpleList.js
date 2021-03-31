@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Dimensions, Image, Text, View } from 'react-native';
+import { Dimensions, Image, Text, TouchableHighlight, View } from 'react-native';
 
 class SimpleList extends Component{
     static defaultProps = {
-        list: {}
+        list: {},
+        onRemove: () => {}
     }
     
     render(){
@@ -14,8 +15,11 @@ class SimpleList extends Component{
 
         return(
             <View
-                style={{width: (width/ 3 - 8), margin: 2, marginBottom: 30, borderWidth: 1, borderColor:"#AAAAAA", padding: 5}}
+                style={{width: (width/ 3 - 8), margin: 2, marginBottom: 30, borderWidth: 1, borderColor:"#AAAAAA", padding: 5, position: "relative"}}
             >
+                <TouchableHighlight onPress={() => {props.onRemove(props.list)}} style={{position: "absolute", right: 0, top: 0, zIndex: 2}}>
+                    <Text style={{backgroundColor: "red", color: "white", padding: 5}}>X</Text>
+                </TouchableHighlight>
                 <Image source={{uri:picture}} style={{height: (width/ 3 - 8), width: (width/ 3 - 8)}}/>
                 <Text style={{fontWeight: 'bold'}}>
                     {list.item.title}

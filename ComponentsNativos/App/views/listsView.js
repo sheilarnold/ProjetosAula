@@ -4,7 +4,8 @@ import SimpleList from '../compents/SimpleList';
 
 class ListsView extends Component{
     static defaultProps = {
-        lists: []
+        lists: [],
+        onRemove: () => {}
     }
     
     render(){
@@ -19,7 +20,7 @@ class ListsView extends Component{
                 <FlatList
                     data={lists}
                     keyExtractor={item => item.id}
-                    renderItem={(item) => <SimpleList list={item} />}
+                    renderItem={(item) => <SimpleList list={item} onRemove={this.props.onRemove}/>}
                     numColumns={3}
                 />
             </View>
